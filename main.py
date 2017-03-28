@@ -65,19 +65,19 @@ class MainHandler(webapp2.RequestHandler):
 	
 
 		if user.validate():
-			self.redirect("/welcome")
+			self.redirect("/welcome?username={0}".format(username))
 		else:
 			if not user.username_val():
 				username_error="That isn't a valid username."
 			else: 
 				username_error=""
-			"""if not user.password_val():
-				password_error="That isn't a valid password."
 			if not verify:
 				verify_error="Please verify your password."""
 			if password and verify:
 				if not user.equal():
 					verify_error="Passwords do not match."
+				elif not user.password_val():
+					password_error="That isn't a valid password."
 
 		
 		self.write_form(username, username_error, password_error, verify_error)
