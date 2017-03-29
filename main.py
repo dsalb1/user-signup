@@ -18,22 +18,22 @@ form="""
 		<table>
 			<tr>
 				<td>Username</td>
-				<td><input type="text" name="username" value required value=%(username)s ></td>
+				<td><input type="text" required name="username" value=%(username)s></td>
 				<td><span class="error">%(username_error)s</span></td>
 			</tr>
 			<tr>
 				<td>Password</td>
-				<td><input type="password" name="password" value required></td>
+				<td><input type="password" name="password" required></td>
 				<td><span class="error">%(password_error)s</span></td>
 			</tr>
 			<tr>
 				<td>Verify Password</td>
-				<td><input type="password" name="verify" value required></td>
+				<td><input type="password" name="verify" required></td>
 				<td><span class="error">%(verify_error)s</span></td>
 			</tr>
 			<tr>
 				<td>Email (optional)</td>
-				<td><input type="email" name="email" ></td>
+				<td><input type="email" name="email" value=%(email)s></td>
 				<td><span class="error"></span></td>
 			</tr>
 		</table>
@@ -43,10 +43,11 @@ form="""
 """
 
 class MainHandler(webapp2.RequestHandler):
-	def write_form(self, username="", username_error="", password_error="", verify_error=""):
+	def write_form(self, username="", username_error="", password_error="", verify_error="", email=""):
 		self.response.write(form % {"username":username, "username_error":username_error, 
 			"password_error":password_error, 
-			"verify_error":verify_error})
+			"verify_error":verify_error,
+			"email":email})
 		
 	def get(self):
 		self.write_form()
@@ -69,18 +70,24 @@ class MainHandler(webapp2.RequestHandler):
 		else:
 			if not user.username_val():
 				username_error="That isn't a valid username."
-			else: 
-				username_error=""
+			else:
+				username_error = ""
 			if not verify:
 				verify_error="Please verify your password."""
+			else:
+				verify_error= ""
 			if password and verify:
 				if not user.equal():
-					verify_error="Passwords do not match."
+					verify_error="Passwords do not match."					
 				elif not user.password_val():
 					password_error="That isn't a valid password."
+				else:
+					verify_error=""
+					password_error=""
+						
 
 		
-		self.write_form(username, username_error, password_error, verify_error)
+		self.write_form(username, username_error, password_error, verify_error, email)
 			#username_error, password_error, verify_error, email_error
 
 
