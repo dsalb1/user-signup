@@ -70,20 +70,13 @@ class MainHandler(webapp2.RequestHandler):
 		else:
 			if not user.username_val():
 				username_error="That isn't a valid username."
-			else:
-				username_error = ""
 			if not verify:
-				verify_error="Please verify your password."""
-			else:
-				verify_error= ""
+				verify_error="Please verify your password."
 			if password and verify:
 				if not user.equal():
 					verify_error="Passwords do not match."					
-				elif not user.password_val():
+				if not user.password_val():
 					password_error="That isn't a valid password."
-				else:
-					verify_error=""
-					password_error=""
 						
 
 		
